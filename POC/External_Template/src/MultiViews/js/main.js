@@ -1,5 +1,7 @@
 $(function() {
-    infuser.defaults.templateUrl = "templates";
+	if(infuser.defaults.templateUrl == "") {
+		infuser.defaults.templateUrl = "templates";
+	}
     //infuser.defaults.templatePrefix = "SomePrefix"
     //infuser.defaults.templateSuffix = "SomeSuffix"
     function State(id, name, cities) {
@@ -31,7 +33,7 @@ $(function() {
             name: ko.observable(name),
 	    isReady: false,
 	    innerVMInitializer:  function () {
-		require(["templates/" + name + ".js?t="+Date.now()], function() {
+		require([infuser.defaults.templateUrl + "/" + name + ".js?t="+Date.now()], function() {
 			//load nameVM JS
 			var vmName = 'var innerVM = new ' + name + 'VM()';
 			eval(vmName);
@@ -166,5 +168,7 @@ $(function() {
     };
     viewModel.initializeInViews(0);
     viewModel.startBinding();
+	window.HUB = {};
+	window.HUB.viewModel = viewModel;
     
 });
